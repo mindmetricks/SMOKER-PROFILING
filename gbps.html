@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBSPS Assessment</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .home-btn {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .scale-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .option input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .option label {
+            cursor: pointer;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .results-container {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .results-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .result-score {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .result-category {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-interpretation {
+            margin-bottom: 2rem;
+        }
+        
+        .score-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .low {
+            background-color: #28a745;
+        }
+        
+        .moderate {
+            background-color: #ffc107;
+        }
+        
+        .high {
+            background-color: #dc3545;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">GBSPS Assessment</a>
+                <a href="index.html" class="home-btn">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="gbsps-scale" class="scale-section">
+            <h1 class="section-title">Genetic and Biological Smoking Predisposition Scale (GBSPS)</h1>
+            
+            <div class="intro">
+                <p>This assessment measures genetic and biological factors that may influence your susceptibility to nicotine dependence. Please answer each question honestly based on your personal experience with smoking.</p>
+            </div>
+            
+            <form id="gbsps-form" class="scale-container">
+                <div class="question">
+                    <div class="question-text">1. Do you have a close family member (parent, sibling, or grandparent) who has smoked regularly or had a history of nicotine addiction?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q1-option1" name="q1" value="0" required>
+                            <label for="q1-option1">No, none</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1-option2" name="q1" value="1">
+                            <label for="q1-option2">Yes, but distant family only</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1-option3" name="q1" value="2">
+                            <label for="q1-option3">Yes, close family (parent/sibling)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1-option4" name="q1" value="3">
+                            <label for="q1-option4">Yes, multiple close family members</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">2. Have any of your close family members struggled with substance use (alcohol, drugs, or tobacco) or addiction?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q2-option1" name="q2" value="0" required>
+                            <label for="q2-option1">No</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2-option2" name="q2" value="1">
+                            <label for="q2-option2">Yes, but not severe addiction</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2-option3" name="q2" value="2">
+                            <label for="q2-option3">Yes, moderate addiction in family</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2-option4" name="q2" value="3">
+                            <label for="q2-option4">Yes, severe addiction in family</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">3. When you smoked your first few cigarettes, how strong were the pleasurable effects (relaxation, euphoria, lightheadedness, etc.)?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q3-option1" name="q3" value="0" required>
+                            <label for="q3-option1">None at all</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3-option2" name="q3" value="1">
+                            <label for="q3-option2">Mild pleasurable effect</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3-option3" name="q3" value="2">
+                            <label for="q3-option3">Strong pleasurable effect</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3-option4" name="q3" value="3">
+                            <label for="q3-option4">Extremely strong and memorable effect</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">4. When you smoked your first few cigarettes, did you experience nausea, dizziness, or physical discomfort?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q4-option1" name="q4" value="3" required>
+                            <label for="q4-option1">Yes, strong discomfort (reverse-scored)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4-option2" name="q4" value="2">
+                            <label for="q4-option2">Moderate discomfort</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4-option3" name="q4" value="1">
+                            <label for="q4-option3">Mild discomfort</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4-option4" name="q4" value="0">
+                            <label for="q4-option4">No discomfort at all</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">5. When you first started smoking, did you feel the urge to smoke frequently within the first few weeks to maintain its effect?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q5-option1" name="q5" value="0" required>
+                            <label for="q5-option1">No, I could go days without smoking</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5-option2" name="q5" value="1">
+                            <label for="q5-option2">Occasionally felt the urge but could control it</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5-option3" name="q5" value="2">
+                            <label for="q5-option3">Frequently felt the urge to smoke</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5-option4" name="q5" value="3">
+                            <label for="q5-option4">Almost immediately developed the need to smoke daily</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">6. Compared to other smokers you know, do you find it harder to cut down or quit despite serious attempts?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q6-option1" name="q6" value="0" required>
+                            <label for="q6-option1">No, it's similar to others</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6-option2" name="q6" value="1">
+                            <label for="q6-option2">Slightly harder than others</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6-option3" name="q6" value="2">
+                            <label for="q6-option3">Significantly harder than others</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6-option4" name="q6" value="3">
+                            <label for="q6-option4">I almost cannot reduce my intake at all</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">7. After a long period of not smoking (e.g., weeks/months), do you still feel a strong pull to smoke when others around you do?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q7-option1" name="q7" value="0" required>
+                            <label for="q7-option1">Not at all</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q7-option2" name="q7" value="1">
+                            <label for="q7-option2">Sometimes, but manageable</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q7-option3" name="q7" value="2">
+                            <label for="q7-option3">Frequently feel the urge</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q7-option4" name="q7" value="3">
+                            <label for="q7-option4">Almost always feel compelled to smoke again</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">8. How quickly did you increase the number of cigarettes per day after you started smoking?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q8-option1" name="q8" value="0" required>
+                            <label for="q8-option1">Very slowly (months or years)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q8-option2" name="q8" value="1">
+                            <label for="q8-option2">Gradually (weeks to months)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q8-option3" name="q8" value="2">
+                            <label for="q8-option3">Rapidly within weeks</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q8-option4" name="q8" value="3">
+                            <label for="q8-option4">Almost instantly felt the need for daily smoking</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-text">9. When you relapse after quitting for a few days or weeks, how much does your consumption reduce compared to your peak smoking habit?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q9-option1" name="q9" value="0" required>
+                            <label for="q9-option1">Drastically reduced</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q9-option2" name="q9" value="1">
+                            <label for="q9-option2">Slightly reduced</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q9-option3" name="q9" value="2">
+                            <label for="q9-option3">No change in consumption</label>
+                        </div>
+                            <div class="option">
+                                <input type="radio" id="q9-option4" name="q9" value="3">
+                                <label for="q9-option4">Increased consumption after relapse</label>
+                            </div>
+                            </div>
+                            </div>
+                            
+                            <div class="question">
+                                <div class="question-text">10. How soon after waking up do you crave your first cigarette?</div>
+                                <div class="options">
+                                    <div class="option">
+                                        <input type="radio" id="q10-option1" name="q10" value="0" required>
+                                        <label for="q10-option1">After an hour or more</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q10-option2" name="q10" value="1">
+                                        <label for="q10-option2">30-60 minutes</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q10-option3" name="q10" value="2">
+                                        <label for="q10-option3">5-30 minutes</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q10-option4" name="q10" value="3">
+                                        <label for="q10-option4">Within 5 minutes of waking up</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="question">
+                                <div class="question-text">11. Do you experience strong nicotine cravings in stressful situations?</div>
+                                <div class="options">
+                                    <div class="option">
+                                        <input type="radio" id="q11-option1" name="q11" value="0" required>
+                                        <label for="q11-option1">Never</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q11-option2" name="q11" value="1">
+                                        <label for="q11-option2">Sometimes</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q11-option3" name="q11" value="2">
+                                        <label for="q11-option3">Frequently</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q11-option4" name="q11" value="3">
+                                        <label for="q11-option4">Always</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="question">
+                                <div class="question-text">12. Have you ever experienced noticeable physical withdrawal symptoms (such as irritability, shakiness, headaches, or fatigue) when attempting to quit?</div>
+                                <div class="options">
+                                    <div class="option">
+                                        <input type="radio" id="q12-option1" name="q12" value="0" required>
+                                        <label for="q12-option1">Never</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q12-option2" name="q12" value="1">
+                                        <label for="q12-option2">Rarely</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q12-option3" name="q12" value="2">
+                                        <label for="q12-option3">Frequently</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q12-option4" name="q12" value="3">
+                                        <label for="q12-option4">Almost always</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="question">
+                                <div class="question-text">13. Over time, have you needed to increase the number of cigarettes to achieve the same effect (pleasure, relief, etc.)?</div>
+                                <div class="options">
+                                    <div class="option">
+                                        <input type="radio" id="q13-option1" name="q13" value="0" required>
+                                        <label for="q13-option1">No, my intake remained stable</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q13-option2" name="q13" value="1">
+                                        <label for="q13-option2">Occasionally increased</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q13-option3" name="q13" value="2">
+                                        <label for="q13-option3">Frequently increased</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q13-option4" name="q13" value="3">
+                                        <label for="q13-option4">Almost always increased</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="question">
+                                <div class="question-text">14. Have you noticed any impact of smoking on your sleep patterns, appetite, or energy levels?</div>
+                                <div class="options">
+                                    <div class="option">
+                                        <input type="radio" id="q14-option1" name="q14" value="0" required>
+                                        <label for="q14-option1">No noticeable impact</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q14-option2" name="q14" value="1">
+                                        <label for="q14-option2">Slight changes but manageable</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q14-option3" name="q14" value="2">
+                                        <label for="q14-option3">Noticeable disruption in sleep/appetite</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q14-option4" name="q14" value="3">
+                                        <label for="q14-option4">Major disruption in sleep/appetite</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="question">
+                                <div class="question-text">15. If you have tried nicotine replacement products (like patches, gum, or vapes), how effective did you find them?</div>
+                                <div class="options">
+                                    <div class="option">
+                                        <input type="radio" id="q15-option1" name="q15" value="0" required>
+                                        <label for="q15-option1">Very effective, reduced my cravings</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q15-option2" name="q15" value="1">
+                                        <label for="q15-option2">Moderately effective</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q15-option3" name="q15" value="2">
+                                        <label for="q15-option3">Slightly effective</label>
+                                    </div>
+                                    <div class="option">
+                                        <input type="radio" id="q15-option4" name="q15" value="3">
+                                        <label for="q15-option4">Ineffective or made no difference</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="btn-container">
+                                <button type="button" id="submit-btn" class="btn btn-success">Submit</button>
+                            </div>
+                            </form>
+                            
+                            <div id="results-container" class="results-container">
+                                <h2 class="results-title">Your GBSPS Results</h2>
+                                <div class="result-score">Score: <span id="score-value">0</span>/42</div>
+                                <div class="result-category" id="category-result"></div>
+                                
+                                <div class="result-interpretation">
+                                    <p><strong>What your score means:</strong></p>
+                                    <div class="score-bar">
+                                        <div id="score-fill" class="score-fill"></div>
+                                    </div>
+                                    <ul>
+                                        <li><strong>0-12 points:</strong> Low Predisposition - You likely have fewer genetic or biological factors that predispose you to nicotine dependence.</li>
+                                        <li><strong>13-26 points:</strong> Moderate Predisposition - You have some genetic or biological factors that may make quitting more challenging.</li>
+                                        <li><strong>27-42 points:</strong> High Predisposition - You have significant biological factors that may make you more susceptible to nicotine dependence.</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="btn-container">
+                                    <button type="button" id="restart-btn" class="btn btn-primary">Take Again</button>
+                                    <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                                </div>
+                            </div>
+
+                        </section>
+                    </main>
+                    
+                    <footer>
+                        <div class="container">
+                            <p>&copy; 2023 Smoking Assessment Tools. All rights reserved.</p>
+                        </div>
+                    </footer>
+                    
+                    <script>
+                    // DOM Elements
+                    const gbspsForm = document.getElementById('gbsps-form');
+                    const submitBtn = document.getElementById('submit-btn');
+                    const resultsContainer = document.getElementById('results-container');
+                    const scoreValue = document.getElementById('score-value');
+                    const categoryResult = document.getElementById('category-result');
+                    const scoreFill = document.getElementById('score-fill');
+                    const restartBtn = document.getElementById('restart-btn');
+                    
+                    // Submit button event
+                    submitBtn.addEventListener('click', () => {
+                        // Check if all questions are answered
+                        const unansweredQuestions = [];
+                        for (let i = 1; i <= 15; i++) {
+                            if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+                                unansweredQuestions.push(i);
+                            }
+                        }
+                    
+                        if (unansweredQuestions.length > 0) {
+                            alert(`Please answer all questions. Missing: ${unansweredQuestions.join(', ')}`);
+                            return;
+                        }
+                    
+                        // Calculate and display results
+                        calculateResults();
+                    });
+                    
+                    // Calculate results
+                    function calculateResults() {
+                        let totalScore = 0;
+                        
+                        // Get all responses
+                        for (let i = 1; i <= 15; i++) {
+                            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                            totalScore += parseInt(selectedOption.value);
+                        }
+                        
+                        // Display results
+                        scoreValue.textContent = totalScore;
+                        
+                        // Set category
+                        let category, colorClass;
+                        if (totalScore <= 12) {
+                            category = "Low Predisposition";
+                            colorClass = "low";
+                        } else if (totalScore <= 26) {
+                            category = "Moderate Predisposition";
+                            colorClass = "moderate";
+                        } else {
+                            category = "High Predisposition";
+                            colorClass = "high";
+                        }
+                        
+                        categoryResult.textContent = category;
+                        
+                        // Set score bar
+                        const percentage = (totalScore / 42) * 100;
+                        scoreFill.style.width = `${percentage}%`;
+                        scoreFill.className = `score-fill ${colorClass}`;
+                        
+                        // Hide form and show results
+                        gbspsForm.style.display = 'none';
+                        resultsContainer.style.display = 'block';
+                        window.scrollTo(0, 0);
+                    }
+                    
+                    // Restart button event
+                    restartBtn.addEventListener('click', () => {
+                        // Reset form
+                        gbspsForm.reset();
+                        
+                        // Hide results
+                        resultsContainer.style.display = 'none';
+                        
+                        // Show form
+                        gbspsForm.style.display = 'block';
+                        window.scrollTo(0, 0);
+                    });
+                    </script>
+                    </body>
+                    </html>
+                    
+                            

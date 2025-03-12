@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTSS Assessment</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .home-btn {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .scale-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .option input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .option label {
+            cursor: pointer;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .results-container {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .results-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .result-score {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .result-category {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-interpretation {
+            margin-bottom: 2rem;
+        }
+        
+        .clinical-action {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        
+        .clinical-action h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">MTSS Assessment</a>
+                <a href="index.html" class="home-btn">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="mtss-scale" class="scale-section">
+            <h1 class="section-title">Motivation To Stop Scale (MTSS)</h1>
+            
+            <div class="intro">
+                <p>The Motivation To Stop Scale (MTSS) is a single-item measure that assesses your current motivation and readiness to quit smoking. Please select the option that best describes your current thoughts about smoking cessation.</p>
+            </div>
+            
+            <form id="mtss-form" class="scale-container">
+                <div class="question">
+                    <div class="question-text">Which of the following describes you?</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="option-1" name="mtss" value="1">
+                            <label for="option-1">I don't want to stop smoking</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="option-2" name="mtss" value="2">
+                            <label for="option-2">I think I should stop smoking but don't really want to</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="option-3" name="mtss" value="3">
+                            <label for="option-3">I want to stop smoking but haven't thought about when</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="option-4" name="mtss" value="4">
+                            <label for="option-4">I really want to stop smoking but I don't know when I will</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="option-5" name="mtss" value="5">
+                            <label for="option-5">I want to stop smoking and hope to soon</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="option-6" name="mtss" value="6">
+                            <label for="option-6">I really want to stop smoking and intend to in the next 3 months</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="option-7" name="mtss" value="7">
+                            <label for="option-7">I really want to stop smoking and intend to in the next month</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" id="submit-btn" class="btn btn-success" disabled>Submit</button>
+                </div>
+            </form>
+            
+            <div id="results-container" class="results-container">
+                <h2 class="results-title">Your MTSS Results</h2>
+                <div class="result-score">Score: <span id="score-value">0</span>/7</div>
+                <div class="result-category" id="category-result"></div>
+                
+                <div class="result-interpretation">
+                    <p><strong>What your score means:</strong></p>
+                    <ul>
+                        <li><strong>1-2:</strong> Very Low Motivation (Precontemplation stage) - You're not currently considering quitting smoking.</li>
+                        <li><strong>3-4:</strong> Moderate Motivation (Contemplation stage) - You're thinking about quitting but haven't made concrete plans.</li>
+                        <li><strong>5-7:</strong> High Motivation (Preparation stage) - You're motivated to quit and are making or planning to make specific steps toward quitting.</li>
+                    </ul>
+                    
+                    <div class="clinical-action" id="clinical-action">
+                        <div id="action-content"></div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" id="restart-btn" class="btn btn-primary">Take Again</button>
+                    <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Smoking Assessment Tools. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const mtssForm = document.getElementById('mtss-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const scoreValue = document.getElementById('score-value');
+        const categoryResult = document.getElementById('category-result');
+        const actionContent = document.getElementById('action-content');
+        const restartBtn = document.getElementById('restart-btn');
+        const radioButtons = document.querySelectorAll('input[name="mtss"]');
+        
+        // Enable submit button when an option is selected
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                submitBtn.disabled = false;
+            });
+        });
+        
+        // Submit button event
+        submitBtn.addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="mtss"]:checked');
+            
+            if (selectedOption) {
+                const score = parseInt(selectedOption.value);
+                displayResults(score);
+            }
+        });
+        
+        // Display results based on score
+        function displayResults(score) {
+            // Hide form
+            mtssForm.style.display = 'none';
+            
+            // Set score
+            scoreValue.textContent = score;
+            
+            // Set category
+            let category, action;
+            
+            if (score <= 2) {
+                category = "Very Low Motivation (Precontemplation)";
+                action = `
+                    <p>At this stage, you're not currently considering quitting smoking. This is completely normal and many smokers go through this phase.</p>
+
+                `;
+            } else if (score <= 4) {
+                category = "Moderate Motivation (Contemplation)";
+                action = `
+                    <p>You're thinking about quitting but haven't made concrete plans yet. This is a great step forward in your quit journey.</p>
+
+                `;
+            } else {
+                category = "High Motivation (Preparation)";
+                action = `
+                    <p>You're highly motivated to quit and are making or planning to make specific steps toward quitting. This is excellent!</p>
+
+                `;
+            }
+            
+            categoryResult.textContent = category;
+            actionContent.innerHTML = action;
+            
+            // Show results
+            resultsContainer.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+        
+        // Restart button event
+        restartBtn.addEventListener('click', () => {
+            // Reset form
+            mtssForm.reset();
+            submitBtn.disabled = true;
+            
+            // Hide results
+            resultsContainer.style.display = 'none';
+            
+            // Show form
+            mtssForm.style.display = 'block';
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>

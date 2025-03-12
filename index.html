@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smoking Assessment Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c5b7b;
+            /* A muted purple */
+            --secondary-color: #355c7d;
+            /* A deeper, complementary blue */
+            --accent-color: #c06c84;
+            /* A soft pink for highlights */
+            --light-color: #f6f4f5;
+            /* A very light grey for backgrounds */
+            --dark-color: #666;
+            /* Dark grey for text */
+            --success-color: #6ab04c;
+            --warning-color: #f9ca24;
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: var(--secondary-color);
+        }
+
+        /* Scales Container Styles */
+        .scales-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .scale-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 1px solid #e2d8d8;
+        }
+
+        .scale-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .scale-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 1.75rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .scale-header h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .scale-body {
+            padding: 1.75rem;
+        }
+
+        .scale-body p {
+            margin-bottom: 1.75rem;
+            color: var(--dark-color);
+            font-size: 1rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .scales-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">Smoking Assessment</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Smoking Assessment Tools</h1>
+            <p>A collection of scales to assess smoking dependence, cravings, and withdrawal symptoms.</p>
+        </section>
+
+        <section class="scales-container">
+            <div class="scale-card">
+                <div class="scale-header">
+                    <h2>WISDM</h2>
+                    <p>Wisconsin Index of Smoking Dependence Motives</p>
+                </div>
+                <div class="scale-body">
+                    <p>Assesses 13 different motivational domains related to smoking dependence.</p>
+                    <a href="WISD.html" class="btn btn-primary">Take Assessment</a>
+                </div>
+            </div>
+
+            <div class="scale-card">
+                <div class="scale-header">
+                    <h2>FTND</h2>
+                    <p>Fagerström Test for Nicotine Dependence</p>
+                </div>
+                <div class="scale-body">
+                    <p>A 6-item scale that measures physical dependence on nicotine.</p>
+                    <a href="ftnd.html" class="btn btn-primary">Take Assessment</a>
+                </div>
+            </div>
+
+
+            <div class="scale-card">
+                <div class="scale-header">
+                    <h2>WSWS</h2>
+                    <p>Wisconsin Withdrawal Scale</p>
+                </div>
+                <div class="scale-body">
+                    <p>The Wisconsin Withdrawal Scale (WSWS) contains 7 factors to measure Nicotine Withdrawal. </p>
+                    <a href="erf.html" class="btn btn-primary">Take Assessment</a>
+                </div>
+            </div>
+
+            <div class="scale-card">
+                <div class="scale-header">
+                    <h2>MTSS</h2>
+                    <p>Motivation To Stop Scale</p>
+                </div>
+                <div class="scale-body">
+                    <p>Measures the smoker's current motivation and readiness to quit smoking.</p>
+                    <a href="mtss.html" class="btn btn-primary">Take Assessment</a>
+                </div>
+            </div>
+
+            <div class="scale-card">
+                <div class="scale-header">
+                    <h2>GBPS</h2>
+                    <p>Genetic and Biological Predisposition Scale</p>
+                </div>
+                <div class="scale-body">
+                    <p>GBPS measures the smoker's biological susceptibility to nicotine dependence. </p>
+                    <a href="gbps.html" class="btn btn-primary">Take Assessment</a>
+                </div>
+            </div>
+            <div class="scale-card">
+                <div class="scale-header">
+                    <h2>OCEAN</h2>
+                    <p>OCEAN-NEO Personality Inventory</p>
+                </div>
+                <div class="scale-body">
+                    <p>Characterizing the smoker's personlity for Psychological predisposition. </p>
+                    <a href="ocin.html" class="btn btn-primary">Take Assessment</a>
+                </div>
+            </div>
+
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p> 2025 Smoking Assessment Tools.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>NEO-Ocean Personality Assessment</title>
+ <style>
+ :root {
+ --primary-color: #4a6fa5;
+ --secondary-color: #166088;
+ --accent-color: #4fc3f7;
+ --light-color: #f8f9fa;
+ --dark-color: #343a40;
+ --success-color: #28a745;
+ --warning-color: #ffc107;
+ }
+
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ body {
+ background-color: #f5f5f5;
+ color: #333;
+ line-height: 1.6;
+ }
+
+ .container {
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 0 20px;
+ }
+
+ header {
+ background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+ color: white;
+ padding: 1rem 0;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ position: sticky;
+ top: 0;
+ z-index: 1000;
+ }
+
+ .navbar {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ }
+
+ .logo {
+ font-size: 1.8rem;
+ font-weight: bold;
+ text-decoration: none;
+ color: white;
+ }
+
+ .home-btn {
+ padding: 0.5rem 1rem;
+ background-color: rgba(255, 255, 255, 0.2);
+ color: white;
+ text-decoration: none;
+ border-radius: 4px;
+ transition: background-color 0.3s;
+ }
+
+ .home-btn:hover {
+ background-color: rgba(255, 255, 255, 0.3);
+ }
+
+ main {
+ padding: 2rem 0;
+ }
+
+ .section-title {
+ text-align: center;
+ margin-bottom: 2rem;
+ color: var(--primary-color);
+ font-size: 2rem;
+ }
+
+ .intro {
+ background-color: white;
+ padding: 2rem;
+ border-radius: 8px;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ margin-bottom: 2rem;
+ }
+
+ .scale-container {
+ background-color: white;
+ padding: 2rem;
+ border-radius: 8px;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ }
+
+ .question {
+ margin-bottom: 1.5rem;
+ padding-bottom: 1.5rem;
+ border-bottom: 1px solid #eee;
+ }
+
+ .question-text {
+ font-weight: 500;
+ margin-bottom: 0.8rem;
+ }
+
+ .options {
+ display: flex;
+ justify-content: space-between;
+ flex-wrap: wrap;
+ }
+
+ .option {
+ display: flex;
+ align-items: center;
+ margin-right: 10px;
+ margin-bottom: 10px;
+ }
+
+ .option input {
+ margin-right: 5px;
+ }
+
+ .likert-scale {
+ display: flex;
+ justify-content: space-between;
+ width: 100%;
+ margin-top: 10px;
+ }
+
+ .likert-option {
+ text-align: center;
+ flex: 1;
+ }
+
+ .likert-option label {
+ display: block;
+ cursor: pointer;
+ padding: 10px;
+ border-radius: 4px;
+ transition: background-color 0.3s;
+ }
+
+ .likert-option input {
+ margin-bottom: 5px;
+ }
+
+ .likert-option label:hover {
+ background-color: #f0f0f0;
+ }
+
+ .btn-container {
+ display: flex;
+ justify-content: space-between;
+ margin-top: 2rem;
+ }
+
+ .btn {
+ padding: 0.8rem 1.5rem;
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+ font-weight: 500;
+ transition: background-color 0.3s;
+ }
+
+ .btn-primary {
+ background-color: var(--primary-color);
+ color: white;
+ }
+
+ .btn-primary:hover {
+ background-color: var(--secondary-color);
+ }
+
+ .btn-secondary {
+ background-color: #6c757d;
+ color: white;
+ }
+
+ .btn-secondary:hover {
+ background-color: #5a6268;
+ }
+
+ .btn-success {
+ background-color: var(--success-color);
+ color: white;
+ }
+
+ .btn-success:hover {
+ background-color: #218838;
+ }
+
+ .results-container {
+ display: none;
+ background-color: white;
+ padding: 2rem;
+ border-radius: 8px;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ margin-top: 2rem;
+ }
+
+ .results-title {
+ color: var(--primary-color);
+ margin-bottom: 1.5rem;
+ text-align: center;
+ }
+
+ .dimension-result {
+ margin-bottom: 1.5rem;
+ padding-bottom: 1rem;
+ border-bottom: 1px solid #eee;
+ }
+
+ .dimension-name {
+ font-weight: 600;
+ margin-bottom: 0.5rem;
+ color: var(--secondary-color);
+ }
+
+ .dimension-description {
+ margin-bottom: 1rem;
+ }
+
+ .score-bar {
+ height: 20px;
+ background-color: #e9ecef;
+ border-radius: 4px;
+ margin-top: 0.5rem;
+ overflow: hidden;
+ }
+
+ .score-fill {
+ height: 100%;
+ background-color: var(--accent-color);
+ border-radius: 4px;
+ transition: width 0.5s ease-in-out;
+ }
+
+ .interpretation {
+ margin-top: 1rem;
+ font-style: italic;
+ }
+
+ footer {
+ background-color: var(--dark-color);
+ color: white;
+ text-align: center;
+ padding: 1.5rem 0;
+ margin-top: 3rem;
+ }
+
+ @media (max-width: 768px) {
+ .navbar {
+ flex-direction: column;
+ }
+
+ .options {
+ flex-direction: column;
+ }
+
+ .likert-scale {
+ flex-wrap: wrap;
+ }
+
+ .likert-option {
+ min-width: 25%;
+ margin-bottom: 10px;
+ }
+ }
+ </style>
+</head>
+<body>
+ <header>
+ <div class="container">
+ <nav class="navbar">
+ <a href="#" class="logo">NEO-Ocean Personality Assessment</a>
+ <a href="index.html" class="home-btn">Back to Home</a>
+ </nav>
+ </div>
+ </header>
+ <main class="container">
+ <section id="neo-ocean-scale" class="scale-section">
+ <h1 class="section-title">NEO-Ocean Personality Assessment (120 Items)</h1>
+
+ <div class="intro">
+ <p>The NEO-Ocean Personality Assessment measures the Big Five personality dimensions: Neuroticism, Extraversion, Openness to Experience, Agreeableness, and Conscientiousness. Please rate each statement according to how accurately it describes you.</p>
+ <p><strong>Rating Scale:</strong> 1 (Strongly Disagree) to 5 (Strongly Agree)</p>
+ </div>
+
+ <form id="neo-form" class="scale-container">
+ <div id="questions-container">
+ <!-- Questions will be dynamically inserted here -->
+ </div>
+
+ <div class="btn-container">
+ <button type="button" id="prev-btn" class="btn btn-secondary">Previous</button>
+ <button type="button" id="next-btn" class="btn btn-primary">Next</button>
+ <button type="button" id="submit-btn" class="btn btn-success" style="display: none;">Submit</button>
+ </div>
+ </form>
+
+ <div id="results-container" class="results-container">
+ <h2 class="results-title">Your NEO-Ocean Personality Profile</h2>
+ <div id="dimension-results">
+ <!-- Dimension results will be dynamically inserted here -->
+ </div>
+ <div class="btn-container">
+ <button type="button" id="restart-btn" class="btn btn-primary">Take Again</button>
+ <a href="index.html" class="btn btn-secondary">Back to Home</a>
+ </div>
+ </div>
+ </section>
+ </main>
+ <footer>
+ <div class="container">
+ <p>&copy; 2023 Personality Assessment Tools. All rights reserved.</p>
+ </div>
+ </footer>
+ <script>
+ // NEO-Ocean Scale Data
+ const neoData = {
+ dimensions: [
+ {
+ name: "Neuroticism",
+ items: [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66, 71, 76, 81, 86, 91, 96, 101, 106, 111, 116],
+ description: "Tendency to experience negative emotions such as anxiety, anger, or depression",
+ interpretations: [
+ { range: [1, 2.5], text: "You tend to be emotionally stable and less reactive to stress. You're generally calm and don't experience persistent negative emotions." },
+ { range: [2.5, 3.5], text: "You have a moderate level of emotional reactivity. You experience negative emotions but generally manage them well." },
+ { range: [3.5, 5], text: "You tend to experience negative emotions more intensely than others. You may be more sensitive to stress and emotional triggers." }
+ ],
+ reversed: [6, 21, 36, 51, 66, 81, 96, 111]
+ },
+ {
+ name: "Extraversion",
+ items: [2, 7, 12, 17, 22, 27, 32, 37, 42, 47, 52, 57, 62, 67, 72, 77, 82, 87, 92, 97, 102, 107, 112, 117],
+ description: "Tendency to seek stimulation and enjoy interactions with others",
+ interpretations: [
+ { range: [1, 2.5], text: "You tend to be more introverted, preferring solitary activities and smaller social settings. You may find social gatherings draining." },
+ { range: [2.5, 3.5], text: "You have a balance of extraverted and introverted tendencies, being comfortable in social situations but also valuing alone time." },
+ { range: [3.5, 5], text: "You tend to be outgoing, energetic, and sociable. You enjoy being around others and may seek excitement and stimulation." }
+ ],
+ reversed: [7, 22, 37, 52, 67, 82, 97, 112]
+ },
+ {
+ name: "Openness to Experience",
+ items: [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58, 63, 68, 73, 78, 83, 88, 93, 98, 103, 108, 113, 118],
+ description: "Appreciation for art, emotion, adventure, unusual ideas, imagination, and curiosity",
+ interpretations: [
+ { range: [1, 2.5], text: "You tend to be more conventional and traditional in your outlook. You may prefer familiar routines and concrete thinking." },
+ { range: [2.5, 3.5], text: "You have a balance between conventional and creative thinking. You appreciate some novelty while maintaining practical perspectives." },
+ { range: [3.5, 5], text: "You tend to be intellectually curious, creative, and open to new experiences. You likely appreciate art, emotion, and abstract ideas." }
+ ],
+ reversed: [8, 23, 38, 53, 68, 83, 98, 113]
+ },
+ {
+ name: "Agreeableness",
+ items: [4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 89, 94, 99, 104, 109, 114, 119],
+ description: "Tendency to be compassionate and cooperative rather than suspicious and antagonistic",
+ interpretations: [
+ { range: [1, 2.5], text: "You tend to be more competitive, skeptical, and challenging in your interactions. You may prioritize your own interests over group harmony." },
+ { range: [2.5, 3.5], text: "You balance cooperation with self-interest. You can be compassionate but also stand up for yourself when needed." },
+ { range: [3.5, 5], text: "You tend to be trusting, altruistic, and cooperative. You value harmony and getting along with others." }
+ ],
+ reversed: [9, 24, 39, 54, 69, 84, 99, 114]
+ },
+ {
+ name: "Conscientiousness",
+ items: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120],
+ description: "Tendency to show self-discipline, act dutifully, and aim for achievement",
+ interpretations: [
+ { range: [1, 2.5], text: "You tend to be more spontaneous and flexible. You may prefer a more relaxed approach to goals and obligations." },
+ { range: [2.5, 3.5], text: "You have a moderate level of organization and goal-direction. You can be disciplined but also allow for flexibility." },
+ { range: [3.5, 5], text: "You tend to be organized, reliable, and hardworking. You likely plan ahead and follow through with commitments." }
+ ],
+ reversed: [10, 25, 40, 55, 70, 85, 100, 115]
+ }
+ ],
+ questions: [
+ { id: 1, text: "I often feel anxious or fearful." },
+ { id: 2, text: "I enjoy being the center of attention." },
+ { id: 3, text: "I have a vivid imagination." },
+ { id: 4, text: "I try to be kind to everyone I meet." },
+ { id: 5, text: "I keep my belongings neat and tidy." },
+ { id: 6, text: "I rarely feel sad or depressed." },
+ { id: 7, text: "I prefer to be alone rather than in large groups." },
+ { id: 8, text: "I'm not interested in abstract ideas." },
+ { id: 9, text: "I sometimes manipulate people to get what I want." },
+ { id: 10, text: "I often forget to put things back in their proper place." },
+ { id: 11, text: "I get stressed out easily." },
+ { id: 12, text: "I talk to a lot of different people at parties." },
+ { id: 13, text: "I enjoy thinking about philosophical questions." },
+ { id: 14, text: "I sympathize with others' feelings." },
+ { id: 15, text: "I make plans and follow through with them." },
+ { id: 16, text: "I worry about things." },
+ { id: 17, text: "I feel comfortable around people." },
+ { id: 18, text: "I enjoy wild flights of fantasy." },
+ { id: 19, text: "I believe that others have good intentions." },
+ { id: 20, text: "I pay attention to details." },
+ { id: 21, text: "I seldom feel blue." },
+ { id: 22, text: "I keep in the background." },
+ { id: 23, text: "I do not like art." },
+ { id: 24, text: "I suspect that others might have hidden motives." },
+ { id: 25, text: "I leave my belongings around." },
+ { id: 26, text: "I am easily disturbed." },
+ { id: 27, text: "I make friends easily." },
+ { id: 28, text: "I have a rich vocabulary." },
+ { id: 29, text: "I feel others' emotions." },
+ { id: 30, text: "I follow a schedule." },
+ { id: 31, text: "I get irritated easily." },
+ { id: 32, text: "I start conversations." },
+ { id: 33, text: "I spend time reflecting on things." },
+ { id: 34, text: "I make people feel at ease." },
+ { id: 35, text: "I am exacting in my work." },
+ { id: 36, text: "I am relaxed most of the time." },
+ { id: 37, text: "I don't like to draw attention to myself." },
+ { id: 38, text: "I don't enjoy theoretical discussions." },
+ { id: 39, text: "I insult people." },
+ { id: 40, text: "I shirk my duties." },
+ { id: 41, text: "I change my mood a lot." },
+ { id: 42, text: "I am the life of the party." },
+ { id: 43, text: "I enjoy hearing new ideas." },
+ { id: 44, text: "I take time out for others." },
+ { id: 45, text: "I get chores done right away." },
+ { id: 46, text: "I often feel blue." },
+ { id: 47, text: "I have a lot of energy." },
+ { id: 48, text: "I am not interested in abstract ideas." },
+ { id: 49, text: "I have a soft heart." },
+ { id: 50, text: "I often forget to put things back in their proper place." },
+ { id: 51, text: "I am relaxed most of the time." },
+ { id: 52, text: "I prefer to be alone." },
+ { id: 53, text: "I enjoy wild flights of fantasy." },
+ { id: 54, text: "I believe that others have good intentions." },
+ { id: 55, text: "I find it difficult to get down to work." },
+ { id: 56, text: "I am not easily bothered by things." },
+ { id: 57, text: "I enjoy being part of a group." },
+ { id: 58, text: "I rarely look for a deeper meaning in things." },
+ { id: 59, text: "I feel others' emotions." },
+ { id: 60, text: "I like to keep things in order." },
+ { id: 61, text: "I rarely get irritated." },
+ { id: 62, text: "I lead others." },
+ { id: 63, text: "I have difficulty understanding abstract ideas." },
+ { id: 64, text: "I make people feel welcome." },
+ { id: 65, text: "I leave a mess in my room." },
+ { id: 66, text: "I take things as they come." },
+ { id: 67, text: "I don't talk a lot." },
+ { id: 68, text: "I love to read challenging material." },
+ { id: 69, text: "I am indifferent to the feelings of others." },
+ { id: 70, text: "I break rules." },
+ { id: 71, text: "I panic easily." },
+ { id: 72, text: "I take control of things." },
+ { id: 73, text: "I do not enjoy going to art museums." },
+ { id: 74, text: "I am concerned about others." },
+ { id: 75, text: "I put things back in their proper place." },
+ { id: 76, text: "I am not easily frustrated." },
+ { id: 77, text: "I avoid crowds." },
+ { id: 78, text: "I enjoy thinking about things." },
+ { id: 79, text: "I can't be bothered with other people's problems." },
+ { id: 80, text: "I complete tasks successfully." },
+ { id: 81, text: "I am not easily disturbed by events." },
+   { id: 82, text: "I keep in the background." },
+   { id: 83, text: "I avoid philosophical discussions." },
+   { id: 84, text: "I feel little concern for others." },
+   { id: 85, text: "I make a mess of things." },
+   { id: 86, text: "I get upset easily." },
+   { id: 87, text: "I know how to captivate people." },
+   { id: 88, text: "I love to think up new ways of doing things." },
+   { id: 89, text: "I take time out for others." },
+   { id: 90, text: "I do things according to a plan." },
+   { id: 91, text: "I am afraid of many things." },
+   { id: 92, text: "I warm up quickly to others." },
+   { id: 93, text: "I can handle a lot of information." },
+   { id: 94, text: "I am hard to get to know." },
+   { id: 95, text: "I follow a schedule." },
+   { id: 96, text: "I rarely feel depressed." },
+   { id: 97, text: "I am skilled in handling social situations." },
+   { id: 98, text: "I avoid difficult reading material." },
+   { id: 99, text: "I am not really interested in others." },
+   { id: 100, text: "I waste my time." },
+   { id: 101, text: "I get overwhelmed by emotions." },
+   { id: 102, text: "I am the life of the party." },
+   { id: 103, text: "I try to understand myself." },
+   { id: 104, text: "I am easy to satisfy." },
+   { id: 105, text: "I am always prepared." },
+   { id: 106, text: "I seldom get mad." },
+   { id: 107, text: "I find it difficult to approach others." },
+   { id: 108, text: "I enjoy examining myself and my life." },
+   { id: 109, text: "I know how to comfort others." },
+   { id: 110, text: "I don't see things through." },
+   { id: 111, text: "I keep my emotions under control." },
+   { id: 112, text: "I am quiet around strangers." },
+   { id: 113, text: "I rarely notice my emotional reactions." },
+   { id: 114, text: "I inquire about others' well-being." },
+   { id: 115, text: "I neglect my duties." },
+   { id: 116, text: "I am a worrier." },
+   { id: 117, text: "I seek adventure." },
+   { id: 118, text: "I have a vivid imagination." },
+   { id: 119, text: "I love to help others." },
+   { id: 120, text: "I like order." }
+
+  ]
+
+  };
+
+  let currentQuestionIndex = 0;
+  let userResponses = {};
+
+  const questionsContainer = document.getElementById("questions-container");
+  const prevButton = document.getElementById("prev-btn");
+  const nextButton = document.getElementById("next-btn");
+  const submitButton = document.getElementById("submit-btn");
+  const resultsContainer = document.getElementById("results-container");
+  const dimensionResultsContainer = document.getElementById("dimension-results");
+  const restartButton = document.getElementById("restart-btn");
+
+  function loadQuestion(questionIndex) {
+   questionsContainer.innerHTML = "";
+   const question = neoData.questions[questionIndex];
+   if (!question) return;
+
+   const questionDiv = document.createElement("div");
+   questionDiv.classList.add("question");
+   questionDiv.innerHTML = `
+   <div class="question-text">${question.text}</div>
+   <div class="likert-scale">
+  ${[1, 2, 3, 4, 5].map(value => `
+  <div class="likert-option">
+  <input type="radio" id="q${question.id}-option${value}" name="q${question.id}" value="${value}" ${userResponses[question.id] == value ? 'checked' : ''}>
+  <label for="q${question.id}-option${value}">${value}</label>
+  </div>
+  `).join('')}
+   </div>
+   `;
+
+   questionsContainer.appendChild(questionDiv);
+
+   // Store user responses when radio buttons are clicked
+   const radioButtons = questionDiv.querySelectorAll('input[type="radio"]');
+   radioButtons.forEach(radio => {
+  radio.addEventListener('change', function() {
+  userResponses[question.id] = parseInt(this.value);
+  });
+   });
+  }
+
+  function showResults() {
+   questionsContainer.style.display = "none";
+   prevButton.style.display = "none";
+   nextButton.style.display = "none";
+   submitButton.style.display = "none";
+   resultsContainer.style.display = "block";
+
+   neoData.dimensions.forEach(dimension => {
+  let dimensionScore = 0;
+  dimension.items.forEach(itemNumber => {
+  let response = userResponses[itemNumber];
+  if (dimension.reversed && dimension.reversed.includes(itemNumber)) {
+  response = 6 - response; // Reverse the score
+  }
+  dimensionScore += response;
+  });
+
+  const averageScore = dimensionScore / dimension.items.length;
+  const interpretation = dimension.interpretations.find(i => averageScore >= i.range[0] && averageScore < i.range[1]) || dimension.interpretations[dimension.interpretations.length - 1];
+
+  const dimensionResultDiv = document.createElement("div");
+  dimensionResultDiv.classList.add("dimension-result");
+  dimensionResultDiv.innerHTML = `
+  <h3 class="dimension-name">${dimension.name}</h3>
+  <p class="dimension-description">${dimension.description}</p>
+  <div class="score-bar">
+  <div class="score-fill" style="width: ${averageScore / 5 * 100}%"></div>
+  </div>
+  <p><strong>Average Score:</strong> ${averageScore.toFixed(2)}</p>
+  <p class="interpretation">${interpretation ? interpretation.text : "No interpretation available."}</p>
+  `;
+  dimensionResultsContainer.appendChild(dimensionResultDiv);
+   });
+  }
+
+  prevButton.addEventListener("click", () => {
+   if (currentQuestionIndex > 0) {
+  currentQuestionIndex--;
+  loadQuestion(currentQuestionIndex);
+  updateButtonVisibility();
+   }
+  });
+
+  nextButton.addEventListener("click", () => {
+   if (currentQuestionIndex < neoData.questions.length - 1) {
+  currentQuestionIndex++;
+  loadQuestion(currentQuestionIndex);
+  updateButtonVisibility();
+   }
+  });
+
+  submitButton.addEventListener("click", () => {
+   showResults();
+  });
+
+  restartButton.addEventListener("click", () => {
+   currentQuestionIndex = 0;
+   userResponses = {};
+   questionsContainer.style.display = "block";
+   resultsContainer.style.display = "none";
+   dimensionResultsContainer.innerHTML = "";
+   loadQuestion(currentQuestionIndex);
+   updateButtonVisibility();
+  });
+
+  function updateButtonVisibility() {
+   if (currentQuestionIndex === 0) {
+  prevButton.style.display = "none";
+   } else {
+  prevButton.style.display = "inline-block";
+   }
+
+   if (currentQuestionIndex === neoData.questions.length - 1) {
+  nextButton.style.display = "none";
+  submitButton.style.display = "inline-block";
+   } else {
+  nextButton.style.display = "inline-block";
+  submitButton.style.display = "none";
+   }
+  }
+
+  // Load first question and initial button visibility
+  loadQuestion(currentQuestionIndex);
+  updateButtonVisibility();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const questionsContainer = document.getElementById("questions-container");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const submitBtn = document.getElementById("submit-btn");
+
+    const totalQuestions = 120;
+    const questionsPerPage = 10;
+    let currentPage = 0;
+
+    // Generate dummy questions (Replace this with actual question data)
+    let questions = [];
+    for (let i = 1; i <= totalQuestions; i++) {
+        questions.push({
+            text: `Question ${i}: This is a sample question text?`,
+            id: i
+        });
+    }
+
+    function displayQuestions() {
+        questionsContainer.innerHTML = ""; // Clear previous questions
+        let start = currentPage * questionsPerPage;
+        let end = Math.min(start + questionsPerPage, totalQuestions);
+
+        for (let i = start; i < end; i++) {
+            let questionHTML = `
+                <div class="question">
+                    <p class="question-text">${questions[i].text}</p>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" name="q${questions[i].id}" value="1"> 1
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${questions[i].id}" value="2"> 2
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${questions[i].id}" value="3"> 3
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${questions[i].id}" value="4"> 4
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${questions[i].id}" value="5"> 5
+                        </div>
+                    </div>
+                </div>
+            `;
+            questionsContainer.innerHTML += questionHTML;
+        }
+
+        // Hide/Show buttons based on page number
+        prevBtn.style.display = currentPage === 0 ? "none" : "inline-block";
+        nextBtn.style.display = currentPage === Math.floor(totalQuestions / questionsPerPage) ? "none" : "inline-block";
+        submitBtn.style.display = currentPage === Math.floor(totalQuestions / questionsPerPage) ? "inline-block" : "none";
+    }
+
+    prevBtn.addEventListener("click", function () {
+        if (currentPage > 0) {
+            currentPage--;
+            displayQuestions();
+        }
+    });
+
+    nextBtn.addEventListener("click", function () {
+        if (currentPage < Math.floor(totalQuestions / questionsPerPage)) {
+            currentPage++;
+            displayQuestions();
+        }
+    });
+
+    displayQuestions(); // Initial load
+});
+
+
+ </script>
+</body>
+</html>

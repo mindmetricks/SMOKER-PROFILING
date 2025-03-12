@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WISDM Assessment</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .home-btn {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .scale-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .option input {
+            margin-right: 5px;
+        }
+        
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .likert-option {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .likert-option label {
+            display: block;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .likert-option input {
+            margin-bottom: 5px;
+        }
+        
+        .likert-option label:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .results-container {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .results-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .subscale-result {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .subscale-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .score-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background-color: var(--accent-color);
+            border-radius: 4px;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .total-score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #eee;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .options {
+                flex-direction: column;
+            }
+            
+            .likert-scale {
+                flex-wrap: wrap;
+            }
+            
+            .likert-option {
+                min-width: 25%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">WISDM Assessment</a>
+                <a href="index.html" class="home-btn">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="wisdm-scale" class="scale-section">
+            <h1 class="section-title">Wisconsin Index of Smoking Dependence Motives (WISDM)</h1>
+            
+            <div class="intro">
+                <p>The Wisconsin Index of Smoking Dependence Motives (WISDM) is comprised of 68 items designed to assess 13 different motivational domains related to smoking dependence. Please rate your level of agreement for each statement using the provided scale.</p>
+                <p><strong>Rating Scale:</strong> 0 (Not True At All) to 7 (Extremely True)</p>
+            </div>
+            
+            <form id="wisdm-form" class="scale-container">
+                <div id="questions-container">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" id="prev-btn" class="btn btn-secondary">Previous</button>
+                    <button type="button" id="next-btn" class="btn btn-primary">Next</button>
+                    <button type="button" id="submit-btn" class="btn btn-success" style="display: none;">Submit</button>
+                </div>
+            </form>
+            
+            <div id="results-container" class="results-container">
+                <h2 class="results-title">Your WISDM Results</h2>
+                <div id="subscale-results">
+                    <!-- Subscale results will be dynamically inserted here -->
+                </div>
+                <div class="total-score">
+                    <p>Total WISDM Score: <span id="total-score">0</span></p>
+                </div>
+                <div class="btn-container">
+                    <button type="button" id="restart-btn" class="btn btn-primary">Take Again</button>
+                    <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Smoking Assessment Tools. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // WISDM Scale Data
+        const wisdmData = {
+            subscales: [
+                { name: "Affiliative Attachment", items: [20, 36, 43, 48, 67], description: "Emotional attachment to cigarettes" },
+                { name: "Automaticity", items: [5, 19, 26, 41, 55], description: "Smoking without awareness or intention" },
+                { name: "Loss of Control", items: [6, 28, 34, 62], description: "Subjective loss of control over smoking" },
+                { name: "Behavioral Choice/Melioration", items: [10, 21, 35, 38, 46, 49, 68], description: "Smoking despite constraints or consequences" },
+                { name: "Cognitive Enhancement", items: [13, 15, 24, 39, 57], description: "Smoking to improve cognitive functioning" },
+                { name: "Craving", items: [11, 29, 37, 50], description: "Smoking in response to craving/urges" },
+                { name: "Cue Exposure/Associative Processes", items: [4, 17, 23, 40, 42, 51, 59], description: "Smoking in response to environmental cues" },
+                { name: "Negative Reinforcement", items: [7, 18, 25, 32, 58, 65], description: "Smoking to relieve negative affect" },
+                { name: "Positive Reinforcement", items: [3, 8, 45, 60, 64], description: "Smoking for positive affect" },
+                { name: "Social/Environmental Goads", items: [22, 30, 44, 52], description: "Social influences on smoking" },
+                { name: "Taste/Sensory Properties", items: [1, 12, 27, 33, 53, 66], description: "Liking the taste/sensations of smoking" },
+                { name: "Tolerance", items: [9, 14, 47, 54, 63], description: "Need to smoke increasing amounts" },
+                { name: "Weight Control", items: [2, 16, 31, 56, 61], description: "Smoking to control weight" }
+            ],
+            questions: [
+                { id: 1, text: "I enjoy the taste of cigarettes most of the time." },
+                { id: 2, text: "Smoking keeps me from gaining weight." },
+                { id: 3, text: "Smoking makes a good mood better." },
+                { id: 4, text: "If I always smoke in the same place it is hard to be there and not smoke." },
+                { id: 5, text: "I often smoke without thinking about it." },
+                { id: 6, text: "Cigarettes control me." },
+                { id: 7, text: "Smoking a cigarette improves my mood." },
+                { id: 8, text: "Smoking makes me feel content." },
+                { id: 9, text: "I usually want to smoke right after I wake up." },
+                { id: 10, text: "Very few things give me pleasure each day like cigarettes." },
+                { id: 11, text: "It's hard to ignore an urge to smoke." },
+                { id: 12, text: "The flavor of a cigarette is pleasing." },
+                { id: 13, text: "I smoke when I really need to concentrate." },
+                { id: 14, text: "I can only go a couple hours between cigarettes." },
+                { id: 15, text: "I frequently smoke to keep my mind focused." },
+                { id: 16, text: "I rely upon smoking to control my hunger and eating." },
+                { id: 17, text: "My life is full of reminders to smoke." },
+                { id: 18, text: "Smoking helps me feel better in seconds." },
+                { id: 19, text: "I smoke without deciding to." },
+                { id: 20, text: "Cigarettes keep me company, like a close friend." },
+                { id: 21, text: "Few things would be able to replace smoking in my life." },
+                { id: 22, text: "I am around smokers much of the time." },
+                { id: 23, text: "There are particular sights and smells that trigger strong urges to smoke." },
+                { id: 24, text: "Smoking helps me stay focused." },
+                { id: 25, text: "Smoking helps me deal with stress." },
+                { id: 26, text: "I frequently light cigarettes without thinking about it." },
+                { id: 27, text: "Most of my daily cigarettes taste good." },
+                { id: 28, text: "Sometimes I feel like cigarettes rule my life." },
+                { id: 29, text: "I frequently crave cigarettes." },
+                { id: 30, text: "Most of the people I spend time with are smokers." },
+                { id: 31, text: "Weight control is a major reason that I smoke." },
+                { id: 32, text: "I usually feel much better after a cigarette." },
+                { id: 33, text: "Some of the cigarettes I smoke taste good." },
+                { id: 34, text: "I'm really hooked on cigarettes." },
+                { id: 35, text: "Smoking is the fastest way to reward myself." },
+                { id: 36, text: "Sometimes I feel like cigarettes are my best friends." },
+                { id: 37, text: "My urges to smoke only get stronger if I don't smoke." },
+                { id: 38, text: "I would continue smoking, even if it meant I could spend less time on my hobbies and other interests." },
+                { id: 39, text: "My concentration is improved after smoking a cigarette." },
+                { id: 40, text: "Seeing someone smoke makes me really want a cigarette." },
+                { id: 41, text: "I find myself reaching for cigarettes without thinking about it." },
+                { id: 42, text: "I crave cigarettes at certain times of the day." },
+                { id: 43, text: "I would feel alone without my cigarettes." },
+                { id: 44, text: "A lot of my friends or family smoke." },
+                { id: 45, text: "Smoking brings me a lot of pleasure." },
+                { id: 46, text: "Cigarettes are about the only things that can give me a lift when I need it." },
+                { id: 47, text: "Other smokers would consider me a heavy smoker." },
+                { id: 48, text: "I feel a strong bond with my cigarettes." },
+                { id: 49, text: "It would take a pretty serious medical problem to make me quit smoking." },
+                { id: 50, text: "When I haven't been able to smoke for a few hours, the craving gets intolerable." },
+                { id: 51, text: "When I do certain things I know I am going to smoke." },
+                { id: 52, text: "Most of my friends and acquaintances smoke." },
+                { id: 53, text: "I love the feeling of inhaling the smoke into my mouth." },
+                { id: 54, text: "I smoke within the first 30 minutes of awakening in the morning." },
+                { id: 55, text: "Sometimes I am not aware that I am smoking." },
+                { id: 56, text: "I'm worried that if I quit smoking I'll gain weight." },
+                { id: 57, text: "Smoking helps me think better." },
+                { id: 58, text: "Smoking really helps me feel better if I've been feeling down." },
+                { id: 59, text: "Some things are very hard to do without smoking." },
+                { id: 60, text: "Smoking makes me feel good." },
+                { id: 61, text: "Smoking keeps me from over eating." },
+                { id: 62, text: "My smoking is out of control." },
+                { id: 63, text: "I consider myself a heavy smoker." },
+                { id: 64, text: "Even when I feel good, smoking helps me feel better." },
+                { id: 65, text: "I reach for cigarettes when I feel irritable." },
+                { id: 66, text: "I enjoy the sensations of a long, slow exhalation of smoke." },
+                { id: 67, text: "Giving up cigarettes would be like losing a good friend." },
+                { id: 68, text: "Smoking is the easiest way to give myself a lift." }
+            ]
+        };
+
+
+        const ftndData = {
+            questions: [
+                { id: 1, text: "How soon after you wake up do you smoke your first cigarette?", 
+                options: [
+                    { text: "Within 5 minutes", value: 3 },
+                    { text: "6 to 30 minutes", value: 2 },
+                    { text: "31 to 60 minutes", value: 1 },
+                    { text: "After 60 minutes", value: 0 }
+                ],
+                type: "multiple"
+                },
+                { id: 2, text: "Do you find it difficult to refrain from smoking in places where it is forbidden (e.g., in church, at the library, in the cinema)?", 
+                options: [
+                    { text: "No", value: 0 },
+                    { text: "Yes", value: 1 }
+                ],
+                type: "binary"
+                },
+                { id: 3, text: "Which cigarette would you hate most to give up?", 
+                options: [
+                    { text: "The first one in the morning", value: 1 },
+                    { text: "Any other", value: 0 }
+                ],
+                type: "binary"
+                },
+                { id: 4, text: "How many cigarettes per day do you smoke?", 
+                options: [
+                    { text: "10 or less", value: 0 },
+                    { text: "11 to 20", value: 1 },
+                    { text: "21 to 30", value: 2 },
+                    { text: "31 or more", value: 3 }
+                ],
+                type: "multiple"
+                },
+                { id: 5, text: "Do you smoke more frequently during the first hours after waking than during the rest of the day?", 
+                options: [
+                    { text: "No", value: 0 },
+                    { text: "Yes", value: 1 }
+                ],
+                type: "binary"
+                },
+                { id: 6, text: "Do you smoke when you are so ill that you are in bed most of the day?", 
+                options: [
+                    { text: "No", value: 0 },
+                    { text: "Yes", value: 1 }
+                ],
+                type: "binary"
+                }
+            ],
+            interpretation: [
+                { range: [0, 2], text: "Very low dependence" },
+                { range: [3, 4], text: "Low dependence" },
+                { range: [5, 7], text: "Moderate dependence" },
+                { range: [8, 10], text: "High dependence" }
+            ]
+        };
+
+
+        // DOM Elements
+        const questionsContainer = document.getElementById('questions-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const subscaleResultsContainer = document.getElementById('subscale-results');
+        const totalScoreElement = document.getElementById('total-score');
+        const restartBtn = document.getElementById('restart-btn');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        // Variables
+        const questionsPerPage = 10;
+        let currentPage = 0;
+        let userResponses = {};
+        
+        // Initialize the form
+        function initForm() {
+            // Reset variables
+            currentPage = 0;
+            userResponses = {};
+            
+            // Clear questions container
+            questionsContainer.innerHTML = '';
+            
+            // Hide results container
+            resultsContainer.style.display = 'none';
+            
+            // Show form
+            document.getElementById('wisdm-form').style.display = 'block';
+            
+            // Render first page of questions
+            renderQuestions();
+            
+            // Update button states
+            updateButtonStates();
+        }
+        
+        // Render questions for the current page
+        function renderQuestions() {
+            questionsContainer.innerHTML = '';
+            
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, wisdmData.questions.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const question = wisdmData.questions[i];
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${question.id}. ${question.text}`;
+                
+                const likertScale = document.createElement('div');
+                likertScale.className = 'likert-scale';
+                
+                for (let j = 0; j <= 7; j++) {
+                    const option = document.createElement('div');
+                    option.className = 'likert-option';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question-${question.id}`;
+                    input.id = `q${question.id}-option${j}`;
+                    input.value = j;
+                    
+                    // Check if user has already answered this question
+                    if (userResponses[question.id] !== undefined && userResponses[question.id] === j) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', () => {
+                        userResponses[question.id] = j;
+                        updateButtonStates();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `q${question.id}-option${j}`;
+                    label.textContent = j;
+                    
+                    option.appendChild(input);
+                    option.appendChild(label);
+                    likertScale.appendChild(option);
+                }
+                
+                const scaleLabels = document.createElement('div');
+                scaleLabels.className = 'scale-labels';
+                scaleLabels.innerHTML = '<span>Not True At All</span><span>Extremely True</span>';
+                scaleLabels.style.display = 'flex';
+                scaleLabels.style.justifyContent = 'space-between';
+                scaleLabels.style.marginTop = '5px';
+                scaleLabels.style.fontSize = '0.8rem';
+                scaleLabels.style.color = '#666';
+                
+                questionElement.appendChild(questionText);
+                questionElement.appendChild(likertScale);
+                questionElement.appendChild(scaleLabels);
+                questionsContainer.appendChild(questionElement);
+            }
+        }
+        
+        // Update button states based on current page and responses
+        function updateButtonStates() {
+            // Previous button
+            prevBtn.disabled = currentPage === 0;
+            
+            // Check if all questions on current page are answered
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, wisdmData.questions.length);
+            let allAnswered = true;
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const questionId = wisdmData.questions[i].id;
+                if (userResponses[questionId] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            // Next/Submit button
+            const isLastPage = (currentPage + 1) * questionsPerPage >= wisdmData.questions.length;
+            
+            if (isLastPage) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                
+                // Check if all questions in the entire form are answered
+                let allQuestionsAnswered = true;
+                for (let i = 0; i < wisdmData.questions.length; i++) {
+                    const questionId = wisdmData.questions[i].id;
+                    if (userResponses[questionId] === undefined) {
+                        allQuestionsAnswered = false;
+                        break;
+                    }
+                }
+                
+                submitBtn.disabled = !allQuestionsAnswered;
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !allAnswered;
+            }
+        }
+        
+        // Calculate subscale scores
+        function calculateScores() {
+            const subscaleScores = {};
+            let totalScore = 0;
+            
+            // Calculate score for each subscale
+            wisdmData.subscales.forEach(subscale => {
+                let sum = 0;
+                subscale.items.forEach(itemId => {
+                    sum += userResponses[itemId];
+                });
+                
+                const mean = sum / subscale.items.length;
+                subscaleScores[subscale.name] = {
+                    score: mean.toFixed(2),
+                    itemCount: subscale.items.length,
+                    description: subscale.description
+                };
+                
+                totalScore += mean;
+            });
+            
+            return {
+                subscaleScores,
+                totalScore: totalScore.toFixed(2)
+            };
+        }
+        
+        // Display results
+        function displayResults() {
+            const { subscaleScores, totalScore } = calculateScores();
+            
+            // Hide form
+            document.getElementById('wisdm-form').style.display = 'none';
+            
+            // Clear previous results
+            subscaleResultsContainer.innerHTML = '';
+            
+            // Add each subscale result
+            Object.entries(subscaleScores).forEach(([name, data]) => {
+                const subscaleElement = document.createElement('div');
+                subscaleElement.className = 'subscale-result';
+                
+                const nameElement = document.createElement('div');
+                nameElement.className = 'subscale-name';
+                nameElement.textContent = name;
+                
+                const descriptionElement = document.createElement('div');
+                descriptionElement.className = 'subscale-description';
+                descriptionElement.textContent = data.description;
+                
+                const scoreElement = document.createElement('div');
+                scoreElement.className = 'subscale-score';
+                scoreElement.textContent = `Score: ${data.score} (from ${data.itemCount} items)`;
+                
+                const scoreBarContainer = document.createElement('div');
+                scoreBarContainer.className = 'score-bar';
+                
+                const scoreFill = document.createElement('div');
+                scoreFill.className = 'score-fill';
+                // Calculate width as percentage of max score (7)
+                const widthPercentage = (parseFloat(data.score) / 7) * 100;
+                scoreFill.style.width = `${widthPercentage}%`;
+                
+                scoreBarContainer.appendChild(scoreFill);
+                
+                subscaleElement.appendChild(nameElement);
+                subscaleElement.appendChild(descriptionElement);
+                subscaleElement.appendChild(scoreElement);
+                subscaleElement.appendChild(scoreBarContainer);
+                
+                subscaleResultsContainer.appendChild(subscaleElement);
+            });
+            
+            // Set total score
+            totalScoreElement.textContent = totalScore;
+            
+            // Show results container
+            resultsContainer.style.display = 'block';
+        }
+        
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                renderQuestions();
+                updateButtonStates();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, wisdmData.questions.length);
+            
+            // Check if all questions on current page are answered
+            let allAnswered = true;
+            for (let i = startIndex; i < endIndex; i++) {
+                const questionId = wisdmData.questions[i].id;
+                if (userResponses[questionId] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            if (allAnswered) {
+                currentPage++;
+                renderQuestions();
+                updateButtonStates();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        submitBtn.addEventListener('click', () => {
+            // Check if all questions are answered
+            let allAnswered = true;
+            for (let i = 0; i < wisdmData.questions.length; i++) {
+                const questionId = wisdmData.questions[i].id;
+                if (userResponses[questionId] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            if (allAnswered) {
+                displayResults();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        restartBtn.addEventListener('click', () => {
+            initForm();
+            window.scrollTo(0, 0);
+        });
+        
+        // Navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                const scale = link.getAttribute('data-scale');
+                
+                // For now, we only have WISDM implemented
+                if (scale === 'wisdm') {
+                    initForm();
+                } else {
+                    // Placeholder for other scales
+                    questionsContainer.innerHTML = `<div class="intro"><h2>${scale.toUpperCase()} Scale</h2><p>This scale is coming soon.</p></div>`;
+                    document.getElementById('wisdm-form').style.display = 'block';
+                    resultsContainer.style.display = 'none';
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'none';
+                }
+            });
+        });
+        
+        // Initialize the form on page load
+        initForm();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WISDM Assessment</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .home-btn {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .scale-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .option input {
+            margin-right: 5px;
+        }
+        
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .likert-option {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .likert-option label {
+            display: block;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .likert-option input {
+            margin-bottom: 5px;
+        }
+        
+        .likert-option label:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .results-container {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .results-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .subscale-result {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .subscale-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .score-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background-color: var(--accent-color);
+            border-radius: 4px;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .total-score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #eee;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .options {
+                flex-direction: column;
+            }
+            
+            .likert-scale {
+                flex-wrap: wrap;
+            }
+            
+            .likert-option {
+                min-width: 25%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">WSWS Assessment</a>
+                <a href="index.html" class="home-btn">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="wisdm-scale" class="scale-section">
+            <h1 class="section-title">Wisconsin Withdrawal Scale (WSWS)</h1>
+            
+            <div class="intro">
+                <p>Please answer the following questions based on how you have felt or what you have noticed over the last 24 hours. Answer based on how you have felt in general during this time.</p>
+                <p><strong>Rating Scale:</strong> 0 (Strongly Disagree) to 4 (Strongly Agree)</p>
+            </div>
+            
+            <form id="wisdm-form" class="scale-container">
+                <div id="questions-container">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" id="prev-btn" class="btn btn-secondary">Previous</button>
+                    <button type="button" id="next-btn" class="btn btn-primary">Next</button>
+                    <button type="button" id="submit-btn" class="btn btn-success" style="display: none;">Submit</button>
+                </div>
+            </form>
+            
+            <div id="results-container" class="results-container">
+                <h2 class="results-title">Your WSWS Results</h2>
+                <div id="subscale-results">
+                    <!-- Subscale results will be dynamically inserted here -->
+                </div>
+                <div class="total-score">
+                    <p>Total WSWS Score: <span id="total-score">0</span></p>
+                </div>
+                <div class="btn-container">
+                    <button type="button" id="restart-btn" class="btn btn-primary">Take Again</button>
+                    <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Smoking Assessment Tools. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // WISDM Scale Data
+        const wisdmData = {
+            subscales: [
+                        { name: "Anger", items: [13, 15, 18], reverseScored: [] },
+                        { name: "Anxiety", items: [3, 6, 8, 10], reverseScored: [10] },
+                        { name: "Sadness", items: [7, 12, 19, 24], reverseScored: [7, 24] },
+                        { name: "Concentration", items: [4, 23, 27], reverseScored: [4] },
+                        { name: "Craving", items: [9, 11, 20, 26], reverseScored: [] },
+                        { name: "Sleep", items: [2, 5, 17, 22, 25], reverseScored: [2, 17, 22] },
+                        { name: "Hunger", items: [1, 14, 16, 21, 28], reverseScored: [] }
+            ],
+            questions: [
+                { id: 1, text: "Food is not particularly appealing to me." },
+                { id: 2, text: "I am getting restful sleep." },
+                { id: 3, text: "I have been tense or anxious" },
+                { id: 4, text: "My level of concentration is excellent." },
+                { id: 5, text: "I awaken from sleep frequently during the night." },
+                { id: 6, text: "I have felt impatient." },
+                { id: 7, text: "I have felt upbeat and optimistic." },
+                { id: 8, text: "I have found myself worrying about my problems." },
+                { id: 9, text: "I have had frequent urges to smoke." },
+                { id: 10, text: "I have felt calm lately." },
+                { id: 11, text: "I have been bothered by the desireto smoke a cigarette." },
+                { id: 12, text: "I have felt sad or depressed." },
+                { id: 13, text: "I have been irritable, easily angered." },
+                { id: 14, text: "I want to nibble on snacks or sweets." },
+                { id: 15, text: "I have been bothered by negative moods such as anger, frustration and irritability." },
+                { id: 16, text: "I have been eating a lot" },
+                { id: 17, text: "I am satisfied with my sleep." },
+                { id: 18, text: "I have felt frustrated." },
+                { id: 19, text: "I have felt hopeless or discouraged." },
+                { id: 20, text: "I have thought about smoking a lot." },
+                { id: 21, text: "I have felt hungry." },
+                { id: 22, text: "I feel that I am getting enough sleep." },
+                { id: 23, text: "It is hard to pay attention to things." },
+                { id: 24, text: "I have felt happy and content." },
+                { id: 25, text: "My sleep has been troubled." },
+                { id: 26, text: "I have trouble getting cigarettes off my mind." },
+                { id: 27, text: "It has been difficult to think clearly." },
+                { id: 28, text: "I think about food a lot." }
+            ]    
+        };
+
+
+
+        // DOM Elements
+        const questionsContainer = document.getElementById('questions-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const subscaleResultsContainer = document.getElementById('subscale-results');
+        const totalScoreElement = document.getElementById('total-score');
+        const restartBtn = document.getElementById('restart-btn');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        // Variables
+        const questionsPerPage = 10;
+        let currentPage = 0;
+        let userResponses = {};
+        
+        // Initialize the form
+        function initForm() {
+            // Reset variables
+            currentPage = 0;
+            userResponses = {};
+            
+            // Clear questions container
+            questionsContainer.innerHTML = '';
+            
+            // Hide results container
+            resultsContainer.style.display = 'none';
+            
+            // Show form
+            document.getElementById('wisdm-form').style.display = 'block';
+            
+            // Render first page of questions
+            renderQuestions();
+            
+            // Update button states
+            updateButtonStates();
+        }
+        
+        // Render questions for the current page
+        function renderQuestions() {
+            questionsContainer.innerHTML = '';
+            
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, wisdmData.questions.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const question = wisdmData.questions[i];
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${question.id}. ${question.text}`;
+                
+                const likertScale = document.createElement('div');
+                likertScale.className = 'likert-scale';
+                
+                for (let j = 0; j <= 4; j++) {
+                    const option = document.createElement('div');
+                    option.className = 'likert-option';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question-${question.id}`;
+                    input.id = `q${question.id}-option${j}`;
+                    input.value = j;
+                    
+                    // Check if user has already answered this question
+                    if (userResponses[question.id] !== undefined && userResponses[question.id] === j) {
+                        input.checked = true;
+                    }
+                    
+                    input.addEventListener('change', () => {
+                        userResponses[question.id] = j;
+                        updateButtonStates();
+                    });
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `q${question.id}-option${j}`;
+                    label.textContent = j;
+                    
+                    option.appendChild(input);
+                    option.appendChild(label);
+                    likertScale.appendChild(option);
+                }
+                
+                const scaleLabels = document.createElement('div');
+                scaleLabels.className = 'scale-labels';
+                scaleLabels.innerHTML = '<span>Strongly Disagree</span><span>Strongly Agree</span>';
+                scaleLabels.style.display = 'flex';
+                scaleLabels.style.justifyContent = 'space-between';
+                scaleLabels.style.marginTop = '5px';
+                scaleLabels.style.fontSize = '0.8rem';
+                scaleLabels.style.color = '#666';
+                
+                questionElement.appendChild(questionText);
+                questionElement.appendChild(likertScale);
+                questionElement.appendChild(scaleLabels);
+                questionsContainer.appendChild(questionElement);
+            }
+        }
+        
+        // Update button states based on current page and responses
+        function updateButtonStates() {
+            // Previous button
+            prevBtn.disabled = currentPage === 0;
+            
+            // Check if all questions on current page are answered
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, wisdmData.questions.length);
+            let allAnswered = true;
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const questionId = wisdmData.questions[i].id;
+                if (userResponses[questionId] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            // Next/Submit button
+            const isLastPage = (currentPage + 1) * questionsPerPage >= wisdmData.questions.length;
+            
+            if (isLastPage) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                
+                // Check if all questions in the entire form are answered
+                let allQuestionsAnswered = true;
+                for (let i = 0; i < wisdmData.questions.length; i++) {
+                    const questionId = wisdmData.questions[i].id;
+                    if (userResponses[questionId] === undefined) {
+                        allQuestionsAnswered = false;
+                        break;
+                    }
+                }
+                
+                submitBtn.disabled = !allQuestionsAnswered;
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !allAnswered;
+            }
+        }
+        
+        // Calculate subscale scores
+        function calculateScores() {
+            const subscaleScores = {};
+            let totalScore = 0;
+            
+            // Calculate score for each subscale
+            wisdmData.subscales.forEach(subscale => {
+                let sum = 0;
+                subscale.items.forEach(itemId => {
+                    let value = userResponses[itemId];
+                    if (subscale.reverseScored.includes(itemId)) {
+                        value = 4 - value; // Reverse the 0-4 scale
+                    }
+                    sum += value;
+                });
+
+
+                
+                const mean = sum / subscale.items.length;
+                subscaleScores[subscale.name] = {
+                    score: mean.toFixed(2),
+                    itemCount: subscale.items.length,
+                    description: subscale.description
+                };
+                
+                totalScore += mean;
+            });
+            
+            return {
+                subscaleScores,
+                totalScore: totalScore.toFixed(2)
+            };
+        }
+        
+        // Display results
+        function displayResults() {
+            const { subscaleScores, totalScore } = calculateScores();
+            
+            // Hide form
+            document.getElementById('wisdm-form').style.display = 'none';
+            
+            // Clear previous results
+            subscaleResultsContainer.innerHTML = '';
+            
+            // Add each subscale result
+            Object.entries(subscaleScores).forEach(([name, data]) => {
+                const subscaleElement = document.createElement('div');
+                subscaleElement.className = 'subscale-result';
+                
+                const nameElement = document.createElement('div');
+                nameElement.className = 'subscale-name';
+                nameElement.textContent = name;
+                
+                const descriptionElement = document.createElement('div');
+                descriptionElement.className = 'subscale-description';
+                descriptionElement.textContent = data.description;
+                
+                const scoreElement = document.createElement('div');
+                scoreElement.className = 'subscale-score';
+                scoreElement.textContent = `Score: ${data.score} (from ${data.itemCount} items)`;
+                
+                const scoreBarContainer = document.createElement('div');
+                scoreBarContainer.className = 'score-bar';
+                
+                const scoreFill = document.createElement('div');
+                scoreFill.className = 'score-fill';
+                // Calculate width as percentage of max score (4)
+                const widthPercentage = (parseFloat(data.score) / 4) * 100;
+                scoreFill.style.width = `${widthPercentage}%`;
+                
+                scoreBarContainer.appendChild(scoreFill);
+                
+                subscaleElement.appendChild(nameElement);
+                subscaleElement.appendChild(descriptionElement);
+                subscaleElement.appendChild(scoreElement);
+                subscaleElement.appendChild(scoreBarContainer);
+                
+                subscaleResultsContainer.appendChild(subscaleElement);
+            });
+            
+            // Set total score
+            totalScoreElement.textContent = totalScore;
+            
+            // Show results container
+            resultsContainer.style.display = 'block';
+        }
+        
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                renderQuestions();
+                updateButtonStates();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, wisdmData.questions.length);
+            
+            // Check if all questions on current page are answered
+            let allAnswered = true;
+            for (let i = startIndex; i < endIndex; i++) {
+                const questionId = wisdmData.questions[i].id;
+                if (userResponses[questionId] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            if (allAnswered) {
+                currentPage++;
+                renderQuestions();
+                updateButtonStates();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        submitBtn.addEventListener('click', () => {
+            // Check if all questions are answered
+            let allAnswered = true;
+            for (let i = 0; i < wisdmData.questions.length; i++) {
+                const questionId = wisdmData.questions[i].id;
+                if (userResponses[questionId] === undefined) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            if (allAnswered) {
+                displayResults();
+                window.scrollTo(0, 0);
+            }
+        });
+        
+        restartBtn.addEventListener('click', () => {
+            initForm();
+            window.scrollTo(0, 0);
+        });
+        
+        // Navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                const scale = link.getAttribute('data-scale');
+                
+                // For now, we only have WISDM implemented
+                if (scale === 'wisdm') {
+                    initForm();
+                } else {
+                    // Placeholder for other scales
+                    questionsContainer.innerHTML = `<div class="intro"><h2>${scale.toUpperCase()} Scale</h2><p>This scale is coming soon.</p></div>`;
+                    document.getElementById('wisdm-form').style.display = 'block';
+                    resultsContainer.style.display = 'none';
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'none';
+                }
+            });
+        });
+        
+        // Initialize the form on page load
+        initForm();
+    </script>
+</body>
+</html>
+
